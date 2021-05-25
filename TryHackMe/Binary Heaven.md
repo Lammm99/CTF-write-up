@@ -48,11 +48,8 @@ Upon SSH into the VM with the credentials we got from earlier, we land at user `
  There is another binary file named `pwn_me` and it has SUID bit set for  user `binexgod`. Therefore, a logical assumption at this point would be, exploiting this binary should escalate us to user `binexgod`.  
 
 It leaks the address of system, so we can bypass ASLR. Now, we have to find the offset for rip.
-we can use pwntools cyclic for creating it. Run `cyclic <length>`
+we can use pwntools cyclic for creating it. Run `cyclic <length>`. 
 
-![](https://cdn.discordapp.com/attachments/800252815888089093/822472323214082138/unknown.png)
-
-It won't run right away, due to pwntools checking update. For this, we can run `echo never > /home/guardian/.cache/.pwntools-cache-3.5/update` or use `nano` to add that line into the config file. Then run the command again to check if it's working now.
 Put the pattern in temporary file, open the binary in gdb and run it with supplying that pattern. This will cause segfault. Take the value it gave and use `cyclic -l value` to find the offset.
 
 ![](https://cdn.discordapp.com/attachments/800252815888089093/822475037394075678/unknown.png)
